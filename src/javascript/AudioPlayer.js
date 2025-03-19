@@ -6,6 +6,7 @@ class AudioPlayer {
         this.audio.autoplay = false;
         this.audio.loop = false;
         this.audio.volume = 1;
+        this.lastVolume = 1; // 添加lastVolume属性
         this.volumeInterval = null;
         this.settingManager = null; // 将在初始化时设置
         this.lastProgressSaveTime = 0;
@@ -319,6 +320,52 @@ class AudioPlayer {
         }
         this.audio.volume = 1;
     }
+}
+
+module.exports = AudioPlayer;
+
+// 音量控制相关方法
+setVolume(value) {
+    const volumeValue = Math.max(0, Math.min(1, value / 100));
+    this.audio.volume = volumeValue;
+    
+    // 更新音量图标
+    const volumeBtn = document.querySelector('.volume-btn i');
+    if (volumeValue === 0) {
+        volumeBtn.className = 'bi bi-volume-mute';
+    } else if (volumeValue < 0.5) {
+        volumeBtn.className = 'bi bi-volume-down';
+    } else {
+        volumeBtn.className = 'bi bi-volume-up';
+    }
+}
+
+// 初始化音量控制
+initVolumeControl() {
+    const volumeSlider = document.querySelector('.volume-slider');
+    const volumeBtn = document.querySelector('.volume-btn');
+    
+    // 设置初始音量
+    this.setVolume(volumeSlider.value);
+    
+    // 监听音量滑块变化
+    volumeSlider.addEventListener('input', (e) => {
+        this.setVolume(e.target.value);
+    });
+    
+    // 点击音量按钮切换静音
+    volumeBtn.addEventListener('click', () => {
+        if (this.audio.volume > 0) {
+            this.lastVolume = this.audio.volume;
+            this.setVolume(0);
+            volumeSlider.value = 0;
+        } else {
+            const newVolume = (this.lastVolume || 1) * 100;
+            this.setVolume(newVolume);
+            volumeSlider.value = newVolume;
+        }
+    });
+}
 }
 
 module.exports = AudioPlayer;

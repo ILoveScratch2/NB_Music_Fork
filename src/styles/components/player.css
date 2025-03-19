@@ -367,3 +367,68 @@
     background-position: 0 0;
   }
 }
+
+/* 音量控制样式 */
+.volume-control-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.volume-btn {
+  position: relative;
+  z-index: 2;
+}
+
+.volume-slider-container {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  width: 32px;
+  height: 120px;
+  background: var(--bg-2);
+  border-radius: 16px;
+  padding: 10px 0;
+  display: none;
+  transform: translateX(-50%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.volume-control-wrapper:hover .volume-slider-container {
+  display: block;
+}
+
+.volume-slider {
+  -webkit-appearance: none;
+  width: 100px;
+  height: 100%;
+  background: transparent;
+  transform: rotate(-90deg) translateX(-50%);
+  transform-origin: left;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, var(--theme-1), var(--theme-2));
+  cursor: pointer;
+  margin-top: -4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.volume-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  background: var(--border-1);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
